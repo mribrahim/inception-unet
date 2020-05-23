@@ -7,8 +7,6 @@ from keras.layers.merge import concatenate
 from keras.layers.normalization import BatchNormalization
 from keras.layers.pooling import MaxPooling2D
 
-from resnet50_fixed import ResNet50
-#from keras.applications.resnet50 import ResNet50
 
 
 def conv_block_simple(prevlayer, filters, prefix, strides=(1, 1)):

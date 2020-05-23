@@ -49,8 +49,8 @@ print("len valid ", len(x_valid))
 
 
 # model = unet.get_unet()
-# model = Inception5.get_unet()
-model = unetV2Block5.get_unet_plus_inception()
+# model = Inception.get_unet()
+model = unetV2.get_unet_plus_inception()
 
 
 model.compile(optimizer=Adam(lr=1e-5), loss=dice_coef_loss, metrics=[dice_coef])
@@ -87,7 +87,7 @@ es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
 callbacks_list = [mc, es]
 
 
- history = model.fit([x_train], [y_train],
+history = model.fit([x_train], [y_train],
                                validation_data=(x_valid, y_valid), 
                                callbacks=callbacks_list,
                                batch_size=5,
