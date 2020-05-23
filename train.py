@@ -36,33 +36,42 @@ def dice_coef_loss(y_true, y_pred):
 smooth = 1.
 
 
+MASSACHUSETTS_PATH = "Massachusetts/"
+TRAINING_SET = 1
+MODEL_NAME = 'UNETV2' # or 'UNET' or 'INCEPTION'
+
 window = 28 * 8
 
 
-path = 'Massachusetts/train/'
+path = MASSACHUSETTS_PATH + 'train/'
 x_train, y_train = read_data.read(path, 110)
+
+if 2 == TRAINING_SET:
+    index = 75 * 49
+    x_train = x_train[0:index,:,:,:]
+    y_train = y_train[0:index,:,:,:]
+
+
 print("len train ", len(x_train))
 
-path = 'Massachusetts/validation/'
+path = MASSACHUSETTS_PATH + 'validation/'
 x_valid, y_valid = read_data.read(path, 4)
 print("len valid ", len(x_valid))
 
 
-# model = unet.get_unet()
-# model = Inception.get_unet()
-model = unetV2.get_unet_plus_inception()
+if 'UNET' == MODEL_NAME:
+    model = unet.get_unet()
+if 'INCEPTION' == MODEL_NAME:
+    model = Inception.get_unet()
+if 'UNETV2' == MODEL_NAME:
+    model = unetV2.get_unet_plus_inception()
 
 
 model.compile(optimizer=Adam(lr=1e-5), loss=dice_coef_loss, metrics=[dice_coef])
 
 
-# model_name = "Unet"
-# model_name = "Inception-Unet"
-model_name = "UnetV2"
-
-# save_weights_path = "results-1/unet/"
-# save_weights_path = "results-1/inception unet/"
-save_weights_path = "results-1/UnetV2/"
+model_name = MODEL_NAME
+save_weights_path = "results-1/" + model_name
 
 
 orig_stdout = sys.stdout
@@ -80,10 +89,7 @@ strTemp = save_weights_path + model_name + ".h5"
 
 
 mc = ModelCheckpoint(strTemp.replace('.h5','.weights'), monitor='loss', mode='min', save_best_only=True, save_weights_only=True)
-
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
-
-
 callbacks_list = [mc, es]
 
 
@@ -96,7 +102,6 @@ history = model.fit([x_train], [y_train],
 
 
 strTemp = save_weights_path + model_name + ".history"
-
 save_history(history,strTemp)
 
 
