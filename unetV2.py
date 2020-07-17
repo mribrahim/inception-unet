@@ -90,19 +90,10 @@ def get_unet_plus_inception():
     conv5 = Conv2D(512, (3, 3), activation='relu', padding='same')(pool4)
     conv5 = Conv2D(512, (3, 3), activation='relu', padding='same')(conv5)
 
-
-	 # **** encoding paralel ****
-    #****  unet-plus-inception ***
     xx1 = block(inputs, 16, 16, False)
     xx2 = block(xx1, 32, 32, True)
     xx3 = block(xx2, 64, 64, True)
     xx4 = block(xx3, 128, 128, True)
-    # *** unetV2 ***
-#    xx1 = block(inputs, 16, 32, False)
-#    xx2 = block(xx1, 32, 64, True)
-#    xx3 = block(xx2, 64, 128, True)
-#    xx4 = block(xx3, 128, 256, True)
-    
     
     up6 = concatenate([Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same')(conv5), conv4, xx4], axis=3)
     conv6 = Conv2D(256, (3, 3), activation='relu', padding='same')(up6)
