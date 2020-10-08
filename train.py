@@ -15,6 +15,7 @@ import glob
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
 
 import unet, Inception, unetV2
 import utils
@@ -22,6 +23,12 @@ import read_data
 
 from keras.models import load_model  
 from keras.preprocessing.image import ImageDataGenerator
+
+
+def save_history(hist, filename):
+    
+    with open(filename, 'wb') as file_pi:
+        pickle.dump(hist.history, file_pi)
 
 def dice_coef(y_true, y_pred):
     y_true_f = K.flatten(y_true)
