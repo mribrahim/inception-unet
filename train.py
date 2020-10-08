@@ -18,7 +18,6 @@ import numpy as np
 import pickle
 
 import unet, Inception, unetV2
-import utils
 import read_data
 
 from keras.models import load_model  
@@ -89,7 +88,7 @@ sys.stdout = orig_stdout
 f.close()
 
 
-epoch = 100;
+epoch = 100
 
 
 strTemp = save_weights_path + model_name + ".h5"
