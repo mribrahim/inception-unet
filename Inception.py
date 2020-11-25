@@ -59,31 +59,31 @@ depth = 3
 def get_unet():
     inputs = Input((img_rows, img_cols, depth))
     
-    up1 = block(inputs, 16, 32, True)
+    conv1 = block(inputs, 16, 32, True)
     
-    up2 = block(up1, 32, 64, True)
+    conv2 = block(conv1, 32, 64, True)
 
-    up3 = block(up2, 64, 128, True)
+    conv3 = block(conv2, 64, 128, True)
     
-    up4 = block(up3, 128, 256, True)
+    conv4 = block(conv3, 128, 256, True)
     
-    up5 = block(up4, 256, 512, True)
+    conv5 = block(conv4, 256, 512, True)
     
     # **** decoding ****
-    xx = concatenate([Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same')(up5), up4], axis=3)    
-    down1 = block(xx, 512, 128, False)
+    xx = concatenate([Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same')(conv5), conv4], axis=3)    
+    up1 = block(xx, 512, 128, False)
     
-    xx = concatenate([Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same')(down1), up3], axis=3)    
-    down2 = block(xx, 256, 64, False)
+    xx = concatenate([Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same')(up1), conv3], axis=3)    
+    up2 = block(xx, 256, 64, False)
     
-    xx = concatenate([Conv2DTranspose(128, (2, 2), strides=(2, 2), padding='same')(down2), up2], axis=3)   
-    down3 = block(xx, 128, 32, False)
+    xx = concatenate([Conv2DTranspose(128, (2, 2), strides=(2, 2), padding='same')(up2), conv2], axis=3)   
+    up3 = block(xx, 128, 32, False)
     
 
-    xx = concatenate([Conv2DTranspose(64, (2, 2), strides=(2, 2), padding='same')(down3), up1], axis=3)   
-    down4 = block(xx, 64, 16, False)
+    xx = concatenate([Conv2DTranspose(64, (2, 2), strides=(2, 2), padding='same')(up3), conv1], axis=3)   
+    up4 = block(xx, 64, 16, False)
 
-    xx = concatenate([Conv2DTranspose(16, (2, 2), strides=(2, 2), padding='same')(down4), inputs], axis=3)
+    xx = concatenate([Conv2DTranspose(16, (2, 2), strides=(2, 2), padding='same')(up4), inputs], axis=3)
 
     xx = Conv2D(32, (3, 3), activation='relu', padding='same')(xx)
 #    xx = concatenate([xx, conv1a]) 
