@@ -21,3 +21,19 @@ model.compile(optimizer=Adam(lr=1e-5), loss=dice_coef_loss, metrics=[dice_coef])
 model.fit(x,y)
 ```
 
+# Citation
+If you use this work in your publications, please cite it as below:
+
+```
+@article{delibasoglu2020improved,
+  title={Improved U-Nets with inception blocks for building detection},
+  author={Delibasoglu, Ibrahim and Cetin, Mufit},
+  journal={Journal of Applied Remote Sensing},
+  volume={14},
+  number={4},
+  pages={044512},
+  year={2020},
+  publisher={International Society for Optics and Photonics}
+}
+
+```
