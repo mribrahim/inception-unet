@@ -94,7 +94,7 @@ epoch = 100
 strTemp = save_weights_path + model_name + ".h5"
 
 
-mc = ModelCheckpoint(strTemp.replace('.h5','.weights'), monitor='loss', mode='min', save_best_only=True, save_weights_only=True)
+mc = ModelCheckpoint(strTemp.replace('.h5','.weights'), mode='min', save_best_only=True, save_weights_only=True)
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
 callbacks_list = [mc, es]
 
